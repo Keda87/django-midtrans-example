@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+    <div class="columns">
+        {% for product in products %}
+            <div class="column">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-3by4">
+                                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4"><strong>{{ product.name }}</strong> -
+                                        Rp.{{ product.price|intcomma }}</p>
+                                </div>
+                            </div>
+
+                            <footer class="card-footer">
+                                <a href="{% url 'checkout' product.id %}" class="card-footer-item">Beli</a>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

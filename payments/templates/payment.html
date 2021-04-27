@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+    <div class="columns is-centered">
+        <div class="column is-one-quarter">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                    </figure>
+                </div>
+
+                <div class="card-content">
+                    <span class="tag {% if midtrans_status == 'pending' %}is-warning{% elif midtrans_status == 'settlement' %}is-success{% endif %}">{{ status }}</span>
+                    <p class="title">{{ product.name }}</p>
+                    <p class="subtitle">Rp.{{ product.price|intcomma }}</p>
+
+                    {% if midtrans_status == 'pending' %}
+                        <p class="subtitle">
+                            Nomor Virtual Account
+                            {% for virtual_account in virtual_accounts %}
+                                <b>
+                                    {{ virtual_account.va_number }}
+                                </b>
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <footer class="card-footer">
+                    <p class="card-footer-item">
+                        <span>
+                            {% if midtrans_status == 'pending' %}
+                                <a href="{% url 'payment-confirmation' transaction_id %}">Konfirmasi Selesai Pembayaran</a>
+                            {% elif midtrans_status == 'settlement' %}
+                                <a href="{% url 'index' %}">Kembali</a>
+                            {% endif %}
+                        </span>
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
